@@ -1,6 +1,7 @@
 import api from "../api/axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { parseJwt } from "../utils/jwt";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -10,7 +11,10 @@ export default function Login() {
   const login = async () => {
     try {
       const res = await api.post("/auth/login", { email, password });
-      localStorage.setItem("token", res.data.token);
+      const token = res.data.token;
+      localStorage.setItem("token", token);
+      const payload = parseJwt(token);
+      if (payload?.role) localStorage.setItem('role', payload.role);
       navigate('/appointments');
     } catch (err) {
       console.error(err);

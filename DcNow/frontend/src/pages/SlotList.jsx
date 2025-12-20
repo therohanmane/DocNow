@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Card from "../components/Card";
 import Button from "../components/Button";
+import { useNavigate } from "react-router-dom";
 
 export default function SlotList() {
   const { doctorId } = useParams();
   const [slots, setSlots] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -18,6 +20,7 @@ export default function SlotList() {
     try {
       await axios.post("/appointment/book", { doctorId, slotId });
       alert("Appointment Booked");
+      navigate('/appointments');
     } catch (err) {
       console.error(err);
       alert(err?.response?.data?.message || 'Booking failed');

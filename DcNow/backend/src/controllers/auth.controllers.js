@@ -1,15 +1,22 @@
 const Patient = require("../models/Patient");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const sendEmail = require("../utils/sendEmail");
 
 exports.register = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, phone, address, age, gender } = req.body;
 
   const existing = await Patient.findOne({ email });
   if (existing) return res.status(400).json({ message: "User exists" });
 
   const hashed = await bcrypt.hash(password, 10);
-  const user = await Patient.create({ name, email, password: hashed });
+  const user = await Patient.create({ name, email, password: hashed, phone, address, age, gender });
+  // send confirmation email (best effort)
+  try {
+    if (user.email) await sendEmail(user.email, 'Welcome to DocNow', `Hello ${user.name},\n\nThank you for registering at DocNow.`);
+  } catch (e) {
+    console.error('Failed to send email', e.message || e);
+  }
 
   res.json({ message: "Registered successfully" });
 };

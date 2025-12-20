@@ -3,6 +3,7 @@ const auth = require("../middleware/auth.middleware");
 const Appointment = require("../models/Appointment");
 const Slot = require("../models/Slot");
 const Doctor = require("../models/Doctor");
+const sendEmail = require("../utils/sendEmail");
 
 router.post("/book", auth, async (req, res) => {
   const slot = await Slot.findById(req.body.slotId);
@@ -20,6 +21,18 @@ router.post("/book", auth, async (req, res) => {
 
   slot.isBooked = true;
   await slot.save();
+  // notify patient and hospital (best-effort)
+  try {
+    const patient = req.user.id;
+    // fetch patient email via model
+    const Patient = require("../models/Patient");
+    const patientObj = await Patient.findById(req.user.id);
+    const hospitalObj = await Doctor.findById(req.body.doctorId).populate('hospital');
+    if (patientObj?.email) await sendEmail(patientObj.email, 'Appointment booked', `Your appointment with Dr ${doctor.name} on ${slot.date} at ${slot.time} is booked.`);
+    if (hospitalObj?.hospital?.email) await sendEmail(hospitalObj.hospital.email, 'New appointment', `A patient booked an appointment with Dr ${doctor.name} on ${slot.date} at ${slot.time}.`);
+  } catch (e) {
+    console.error('Failed to send notification emails', e.message || e);
+  }
 
   res.json(appt);
 });

@@ -27,6 +27,10 @@ export default function Hospitals() {
       {error && <Card>{error}</Card>}
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px,1fr))', gap: 12 }}>
+        {hospitals.length === 0 && !loading && (
+          <Card>No hospitals available right now. Please check back later.</Card>
+        )}
+
         {hospitals.map(h => (
           <Card key={h._id} className="">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

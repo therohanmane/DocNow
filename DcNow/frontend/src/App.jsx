@@ -9,6 +9,8 @@ import NavBar from "./components/NavBar";
 import Register from "./pages/Register";
 import Hospitals from "./pages/Hospitals";
 import DoctorList from "./pages/DoctorList";
+import HospitalLogin from "./pages/HospitalLogin";
+import LoginSelector from "./pages/LoginSelector";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
       <NavBar />
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/login" element={<LoginSelector />} />
+        <Route path="/hospital/login" element={<HospitalLogin />} />
         <Route path="/register" element={<Register />} />
         <Route path="/hospitals" element={<Hospitals />} />
         <Route path="/doctors/:hospitalId" element={<DoctorList />} />

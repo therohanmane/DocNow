@@ -6,6 +6,10 @@ export default function AddDoctor() {
 
   const addDoctor = async () => {
     try {
+      if (!doctor.name || !doctor.specialization) {
+        alert('Please provide name and specialization');
+        return;
+      }
       await axios.post("/doctor", doctor);
       alert("Doctor Added");
       setDoctor({});
