@@ -1,18 +1,23 @@
-const express = require("express");
+
+const express = require("express");   // ✅ MISSING LINE (VERY IMPORTANT)
 const cors = require("cors");
 
 const app = express();
 
+// Debug middleware (keep for now)
+app.use((req, res, next) => {
+  console.log("➡️ Incoming:", req.method, req.url);
+  next();
+});
+
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
+// AUTH ROUTES
 app.use("/api/auth", require("./routes/auth.routes"));
-app.use("/api/hospital", require("./routes/hospital.routes"));
-app.use("/api/doctor", require("./routes/doctor.routes"));
-app.use("/api/slot", require("./routes/slot.routes"));
-app.use("/api/appointment", require("./routes/appointment.routes"));
-app.use("/api/admin", require("./routes/admin.routes"));
 
+// ROOT TEST
 app.get("/", (req, res) => {
   res.send("API Running");
 });
