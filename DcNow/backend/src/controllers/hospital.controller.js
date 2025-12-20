@@ -38,3 +38,8 @@ exports.loginHospital = async (req, res) => {
 
   res.json({ token, hospital });
 };
+
+exports.getApprovedHospitals = async (req, res) => {
+  const hospitals = await require('../models/Hospital').find({ status: 'APPROVED' });
+  res.json(hospitals);
+};

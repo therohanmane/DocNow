@@ -1,11 +1,17 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --primary: #0b76ef; /* blue */
+  --accent: #17a2b8; /* teal */
+  --muted: #6b7280;
+  --bg: #f6f8fb;
+  --card: #ffffff;
+  --text: #0f1722;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color-scheme: light;
+  color: var(--text);
+  background-color: var(--bg);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -25,10 +31,42 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  flex-direction: column;
+  align-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
+
+.container {
+  width: 100%;
+  max-width: 1024px;
+  padding: 24px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(15, 23, 34, 0.08);
+  padding: 18px;
+}
+
+.header {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:16px;
+}
+
+.logo {
+  width:48px;height:48px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px
+}
+
+.form-input { width:100%; padding:10px 12px; border:1px solid #e6e9ee; border-radius:8px; margin-bottom:12px; font-size:14px }
+.form-btn { background:var(--primary); color: #fff; padding:10px 14px; border-radius:8px; border:none; cursor:pointer }
+.muted { color:var(--muted) }
+
+.appointments-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap:12px }
+.appt-card { background:var(--card); padding:12px; border-radius:10px; box-shadow:0 4px 10px rgba(15,23,34,0.06) }
 
 h1 {
   font-size: 3.2em;
